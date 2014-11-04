@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'HexColors'
-  s.version  = '2.2.1-Hinge'
+  s.version  = '2.2.2'
   s.license  = 'MIT'
   s.summary  = 'A Fork of the original project HexColors which handles alpha in the HexString #rrggbbaa or #rgba'
   s.homepage = 'https://github.com/sfurlani/HexColors'
