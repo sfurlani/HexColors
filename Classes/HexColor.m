@@ -30,18 +30,29 @@
     }
     
     // check for string length
-    assert(7 == hexString.length || 4 == hexString.length);
+    assert(7 == hexString.length || 4 == hexString.length || 9 == hexString.length || 5 == hexString.length);
     
     // check for 3 character HexStrings
+
     hexString = [[self class] hexStringTransformFromThreeCharacters:hexString];
     
-    NSString *redHex    = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(1, 2)]];
+    NSUInteger start = 1;
+    if (hexString.length == 9 || hexString.length == 5)
+    {
+        NSString *alphaHex    = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(start, 2)]];
+        unsigned alphaInt = [[self class] hexValueToUnsigned:alphaHex];
+        alpha = ((float)alphaInt)/255.0f;
+        
+        start += 2;
+    }
+    
+    NSString *redHex    = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(start, 2)]];
     unsigned redInt = [[self class] hexValueToUnsigned:redHex];
     
-    NSString *greenHex  = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(3, 2)]];
+    NSString *greenHex  = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(start+2, 2)]];
     unsigned greenInt = [[self class] hexValueToUnsigned:greenHex];
     
-    NSString *blueHex   = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(5, 2)]];
+    NSString *blueHex   = [NSString stringWithFormat:@"0x%@", [hexString substringWithRange:NSMakeRange(start+4, 2)]];
     unsigned blueInt = [[self class] hexValueToUnsigned:blueHex];
     
     HXColor *color = [HXColor colorWith8BitRed:redInt green:greenInt blue:blueInt alpha:alpha];
@@ -74,6 +85,13 @@
                      [hexString substringWithRange:NSMakeRange(1, 1)],[hexString substringWithRange:NSMakeRange(1, 1)],
                      [hexString substringWithRange:NSMakeRange(2, 1)],[hexString substringWithRange:NSMakeRange(2, 1)],
                      [hexString substringWithRange:NSMakeRange(3, 1)],[hexString substringWithRange:NSMakeRange(3, 1)]];
+    } else if (hexString.length == 5)
+    {
+        hexString = [NSString stringWithFormat:@"#%@%@%@%@%@%@%@%@",
+                     [hexString substringWithRange:NSMakeRange(1, 1)],[hexString substringWithRange:NSMakeRange(1, 1)],
+                     [hexString substringWithRange:NSMakeRange(2, 1)],[hexString substringWithRange:NSMakeRange(2, 1)],
+                     [hexString substringWithRange:NSMakeRange(3, 1)],[hexString substringWithRange:NSMakeRange(3, 1)],
+                     [hexString substringWithRange:NSMakeRange(4, 1)],[hexString substringWithRange:NSMakeRange(4, 1)]];
     }
     
     return hexString;
